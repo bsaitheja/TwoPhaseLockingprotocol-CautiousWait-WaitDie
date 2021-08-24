@@ -1,0 +1,84 @@
+
+CSE 5331
+TEAM :
+	Sai Theja Bikumalla 1001867581
+	Sathvik Vallivedu   1001899684
+__        __       _                                  _             _                              _                          _               _    
+\ \      / /  ___ | |  ___   ___   _ __ ___    ___   | |_   ___    | |_ __      __  ___     _ __  | |__    __ _  ___   ___   | |  ___    ___ | | __
+ \ \ /\ / /  / _ \| | / __| / _ \ | '_ ` _ \  / _ \  | __| / _ \   | __|\ \ /\ / / / _ \   | '_ \ | '_ \  / _` |/ __| / _ \  | | / _ \  / __|| |/ /
+  \ V  V /  |  __/| || (__ | (_) || | | | | ||  __/  | |_ | (_) |  | |_  \ V  V / | (_) |  | |_) || | | || (_| |\__ \|  __/  | || (_) || (__ |   < 
+   \_/\_/    \___||_| \___| \___/ |_| |_| |_| \___|   \__| \___/    \__|  \_/\_/   \___/   | .__/ |_| |_| \__,_||___/ \___|  |_| \___/  \___||_|\_\
+                                                                                           |_|
+
+Cautious Wait
+
+
+---------------------------------------------------------------------------------------------
+b1; Begin T1:Record is added to transaction table with Tid=1
+ 
+
+---------------------------------------------------------------------------------------------
+r1(Y); Read lock acquired by T1 on item Y
+
+---------------------------------------------------------------------------------------------
+w1(Y); Read lock upgraded to write lock on Y by transaction T1
+
+---------------------------------------------------------------------------------------------
+r1(Z); Read lock acquired by T1 on item Z
+
+---------------------------------------------------------------------------------------------
+b2; Begin T2:Record is added to transaction table with Tid=2
+ 
+
+---------------------------------------------------------------------------------------------
+r2(Y);
+ : T2 Transaction is blocked, As per Cautious Wait methodology
+
+---------------------------------------------------------------------------------------------
+b3; Begin T3:Record is added to transaction table with Tid=3
+ 
+
+---------------------------------------------------------------------------------------------
+r3(Z); Read lock granted by T3 on item Z
+
+---------------------------------------------------------------------------------------------
+w3(Z);
+ : T3 Transaction is blocked, As per Cautious Wait methodology
+
+---------------------------------------------------------------------------------------------
+b4; Begin T4:Record is added to transaction table with Tid=4
+ 
+
+---------------------------------------------------------------------------------------------
+r4(X); Read lock acquired by T4 on item X
+
+---------------------------------------------------------------------------------------------
+r4(Y);
+ : T4 Transaction is blocked, As per Cautious Wait methodology
+
+---------------------------------------------------------------------------------------------
+e1; Transaction T1, state = committed. Releases all locks held by T1
+T2 has resumed its operation 
+r2(Y) Read lock granted by T2 on item Y
+T3 has resumed its operation 
+w3(Z) Read lock upgraded to write lock on Z by transaction T3
+
+---------------------------------------------------------------------------------------------
+w4(X); Added to waiting data_in_file list for Transaction T4
+
+---------------------------------------------------------------------------------------------
+e3; Transaction T3, state = committed. Releases all locks held by T3
+
+---------------------------------------------------------------------------------------------
+e2; Transaction T2, state = committed. Releases all locks held by T2
+T4 has resumed its operation 
+r4(Y) Read lock granted by T4 on item Y
+w4(X) Read lock upgraded to write lock on X by transaction T4
+
+---------------------------------------------------------------------------------------------
+w4(Y); Read lock upgraded to write lock on Y by transaction T4
+
+---------------------------------------------------------------------------------------------
+e4; Transaction T4, state = committed. Releases all locks held by T4
+
+---------------------------------------------------------------------------------------------
